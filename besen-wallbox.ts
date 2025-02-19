@@ -5,8 +5,9 @@ import { ChargingStatus } from './chargin-status';
 export class BesenWallbox implements Device {
     private provider!: Provider;
     private communicator!: Communicator;
-
     private evse?: Evse;
+
+    private _updateAmpsTimeout: NodeJS.Timeout | undefined;
 
     init = async (provider: Provider): Promise<boolean> => {
         this.provider = provider;
@@ -33,7 +34,7 @@ export class BesenWallbox implements Device {
             if (event === 'added') {
                 this.provider.logger.info(`Found EVSE with serial ${serial}, logging in ${password}`);
                 this.evse = evse;
-
+                this.evse.onError = this.onEvseError;
                 this.evse.login(password.toString());
             } else if (event === 'changed') {
                 this.provider.logger.info('EVSE changed');
@@ -44,16 +45,31 @@ export class BesenWallbox implements Device {
         })
     }
 
-    stop(): Promise<void> {
-        throw new Error('Method not implemented.');
+    stop = async (): Promise<void> => {
+        this.communicator.stop();
     }
 
-    destroy(): Promise<void> {
-        throw new Error('Method not implemented.');
+    destroy = async (): Promise<void> => {
     }
 
-    valueChanged(attribute: Attribute, value: any): Promise<void> {
-        throw new Error('Method not implemented.');
+    valueChanged = async (attribute: Attribute, value: any): Promise<void> => {
+        this.provider.logger.info(`Setting ${attribute.name} to ${value}`);
+    }
+
+    onNumberChanged = async (attribute: Attribute, value: number): Promise<void> => {
+        this.provider.logger.info(`Setting number ${attribute.name} to ${value}`);
+
+        if (this.evse && attribute.key === 'max_output_electricity') {
+            if (this._updateAmpsTimeout) {
+                clearTimeout(this._updateAmpsTimeout);
+            }
+
+            this._updateAmpsTimeout = setTimeout(() => {
+                if (value >= 6 && value <= 16) {
+                    this.evse?.setMaxElectricity(value);
+                }
+            }, 1500);
+        }
     }
 
     private updateAttributeWithState = async (name: string, value?: any, updateUndefined = false) => {
@@ -66,6 +82,10 @@ export class BesenWallbox implements Device {
         if (attribute) {
             await this.provider.setAttributeState(attribute, { state: value });
         }
+    }
+
+    private onEvseError = (command?: number) => {
+        this.provider.logger.error(`Error happened while performing command: ${command}`);
     }
 
     private updateEvse = async (evse: Evse) => {
@@ -87,6 +107,8 @@ export class BesenWallbox implements Device {
         this.updateAttributeWithState('gun_state', evse.state?.gunState);
         this.updateAttributeWithState('output_state', evse.state?.outputState);
         this.updateAttributeWithState('current_state', evse.state?.currentState);
+
+        this.updateAttributeWithState('max_output_electricity', evse.config.maxElectricity);
 
         if (evse.state?.gunState !== undefined && evse.state?.currentState !== undefined) {
             this.updateAttributeWithState('charging_state', this.statesToChargingStatus(evse.state.gunState, evse.state.currentState));

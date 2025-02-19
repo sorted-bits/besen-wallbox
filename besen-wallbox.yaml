@@ -34,6 +34,14 @@ attributes:
     name: Max electricity
     type: sensor            
 
+  max_output_electricity:
+    name: Max output electricity
+    type: number
+    unit_of_measurement: A
+    step: 1
+    min: 6
+    max: 16
+
   current_power:
     name: Current power
     type: sensor
