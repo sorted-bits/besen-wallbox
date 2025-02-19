@@ -1,0 +1,101 @@
+package:
+  name: besen-wallbox
+  version: 1.0.0
+  description: Besen Wallbox support
+  author: Wim Haanstra
+  entry: besen-wallbox.ts
+
+attributes:
+  client_port:
+    name: Client port
+    type: sensor
+
+  brand:
+    name: Brand
+    type: sensor
+
+  model:
+    name: Model
+    type: sensor    
+
+  phases:
+    name: Phases
+    type: sensor
+
+  max_power:
+    name: Max power
+    type: sensor
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    unavailability_value: 0
+
+  max_electricity:
+    name: Max electricity
+    type: sensor            
+
+  current_power:
+    name: Current power
+    type: sensor
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    unavailability_value: 0
+
+  
+  current_amount:
+    name: Current amount
+    type: sensor
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    availability: false
+
+  l1_voltage:
+    name: L1 Voltage
+    type: sensor
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+
+  l1_electricity:
+    name: L1 Electricity
+    type: sensor
+
+  l2_voltage:
+    name: L2 Voltage
+    type: sensor
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+
+  l2_electricity:
+    name: L2 Electricity
+    type: sensor
+
+  l3_voltage:
+    name: L3 Voltage
+    type: sensor      
+    device_class: voltage
+    state_class: measurement
+    unit_of_measurement: V
+
+  l3_electricity:
+    name: L3 Electricity
+    type: sensor
+
+  gun_state:
+    name: Gun state
+    type: sensor
+
+  output_state:
+    name: Output state
+    type: sensor
+
+  current_state:
+    name: Current state
+    type: sensor
+
+  charging_state:
+    name: Charging state
+    type: sensor

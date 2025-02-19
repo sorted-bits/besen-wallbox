@@ -1,0 +1,16 @@
+{
+  "name": "besen-wallbox",
+  "version": "1.0.0",
+  "description": "Add Besen Wallbox support",
+  "main": "besen.ts",
+  "keywords": [],
+  "author": "Wim Haanstra",
+  "license": "ISC",
+  "dependencies": {
+    "quantumhub-sdk": "1.7.0-beta.2",
+    "sorted-emproto": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4"
+  }
+}
