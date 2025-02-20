@@ -7,7 +7,7 @@
   "author": "Wim Haanstra",
   "license": "ISC",
   "dependencies": {
-    "quantumhub-sdk": "1.7.0-beta.2",
+    "quantumhub-sdk": "1.7.3",
     "sorted-emproto": "1.0.3"
   },
   "devDependencies": {
