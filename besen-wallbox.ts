@@ -1,4 +1,4 @@
-import { Attribute, BaseAttributeWithState, Device, NumberAttribute, Provider, SelectAttribute } from 'quantumhub-sdk';
+import { Attribute, BaseAttributeWithState, ButtonAttribute, Device, NumberAttribute, Provider, SelectAttribute } from 'quantumhub-sdk';
 import { createCommunicator, Communicator, Evse } from 'sorted-emproto';
 import { ChargingStatus } from './chargin-status';
 
@@ -71,6 +71,29 @@ export class BesenWallbox implements Device {
             }, 1500);
         }
     }
+
+    onButtonPressed = async (attribute: ButtonAttribute): Promise<void> => {
+        switch (attribute.key) {
+            case 'start_charging':
+                if (this.evse) {
+                    this.evse.chargeStart({
+                        userId: 'HomeAssistant',
+                    });
+                }
+
+                break;
+            case 'stop_charging':
+                if (this.evse) {
+                    this.evse.chargeStop({
+                        userId: 'HomeAssistant',
+                    });
+                }
+
+                break;
+            default:
+                this.provider.logger.warn(`Invalid button pressed: ${attribute.key} - ${attribute.name}`);
+        }
+    };
 
     private updateAttributeWithState = async (name: string, value?: any, updateUndefined = false) => {
         if (value === undefined && !updateUndefined) {

@@ -33,6 +33,9 @@ attributes:
   max_electricity:
     name: Max electricity
     type: sensor            
+    unit_of_measurement: A
+    device_class: current
+    state_class: measurement
 
   max_output_electricity:
     name: Max output electricity
@@ -41,6 +44,8 @@ attributes:
     step: 1
     min: 6
     max: 16
+    device_class: current
+    state_class: measurement
 
   current_power:
     name: Current power
@@ -49,7 +54,6 @@ attributes:
     state_class: measurement
     unit_of_measurement: W
     unavailability_value: 0
-
   
   current_amount:
     name: Current amount
@@ -69,6 +73,9 @@ attributes:
   l1_electricity:
     name: L1 Electricity
     type: sensor
+    unit_of_measurement: A
+    device_class: current
+    state_class: measurement
 
   l2_voltage:
     name: L2 Voltage
@@ -79,7 +86,10 @@ attributes:
 
   l2_electricity:
     name: L2 Electricity
+    unit_of_measurement: A
     type: sensor
+    device_class: current
+    state_class: measurement
 
   l3_voltage:
     name: L3 Voltage
@@ -91,10 +101,14 @@ attributes:
   l3_electricity:
     name: L3 Electricity
     type: sensor
+    unit_of_measurement: A
+    device_class: current
+    state_class: measurement
 
   gun_state:
     name: Gun state
     type: sensor
+    icon: mdi:connection
 
   output_state:
     name: Output state
@@ -107,3 +121,13 @@ attributes:
   charging_state:
     name: Charging state
     type: sensor
+
+  start_charging:
+    name: Start charging
+    type: button    
+    icon: mdi:play
+
+  stop_charging:
+    name: Stop charging
+    type: button   
+    icon: mdi:stop
